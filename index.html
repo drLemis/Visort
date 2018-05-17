@@ -3,30 +3,35 @@
 <title>Visort</title>
 
 <head>
-	<style>
-		.footer {
-			position: fixed;
-			text-align: center;
-			bottom: 0px;
-			width: 100%;
-			background-color: grey;
-		}
-	</style>
+    <style>
+        .footer {
+            position: fixed;
+            text-align: center;
+            bottom: 0px;
+            width: 100%;
+            background-color: grey;
+        }
+    </style>
 </head>
-	
-<body>
-	<div>
-		<canvas id="graphCanvas" width="800" height="600" style="border:1px solid #d3d3d3;"> </canvas>
-		<button class="button" id="button" onclick="playSound()">PLAY</button>
-	</div>
 
-	<br><hr><br>
-	
+<body>
+    <div>
+        <canvas id="graphCanvas" width="800" height="600" style="border:1px solid grey;"> </canvas>
+        <button class="button" id="button" onclick="orchestrateSorting()">BUBBLE SORT</button>
+    </div>
+
+    <br>
+    <hr><br>
+
     <div class="footer">
-		2018.05.17, v1.03
-	</div>
-	
-	<script src="graph.js"></script>
-	<script src="sound.js"></script>
+        2018.05.17, v1.05
+    </div>
+
+
+    <script src="data.js"></script>
+    <script src="draw.js"></script>
+    <script src="sound.js"></script>
+    <script src="sort.js"></script>
 </body>
+
 </html>

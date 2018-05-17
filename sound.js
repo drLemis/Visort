@@ -3,14 +3,19 @@ var playIndex = 0;
 var audioCtx;
 var oscillator;
 
+var timerId;
+
 // --- sound stuff ---
 
 function playSound() {
 	if (!playing) {
+		stopSound();
 		document.getElementById("button").innerHTML = 'STOP';
 		audioCtx = new(window.AudioContext || window.webkitAudioContext || window.audioContext);
+		
 		playing = true;
-		playArray(graphLines);
+		playIndex = 0;
+		timerId = setInterval('playNextElement()', 50);
 	} else {
 		document.getElementById("button").innerHTML = 'PLAY';
 		stopSound();
@@ -20,35 +25,30 @@ function playSound() {
 function stopSound() {
 	playing = false;
 	playIndex = 0;
+	clearInterval(timerId);
 	document.getElementById("button").innerHTML = 'PLAY';
 }
 
-function playArray(array) {
-	if (playing) {
-		if (playIndex >= array.length) {
+function playNextElement(){
+		if (playIndex >= graphLines.length) {
 			stopSound();
 			return;
 		}
 		
-		console.log(playIndex);
+		var frequency = (440 / graphLines.length) * graphLines[playIndex] + 440;
 		
-		var frequency = 440 / array.length * array[playIndex] + 440;
-		beep(5, frequency);
+		beep(50, frequency);
 		
+		console.log(frequency);
 		playIndex++;
-		
-		setTimeout(playArray(array), 50);
-	}
 }
 
 function beep(duration, frequency, volume, type, callback) {
 	if (playing) {
-		if (oscillator) {
-			oscillator.stop();
-		}
-
-		oscillator = audioCtx.createOscillator();
+		var oscillator = audioCtx.createOscillator();
 		var gainNode = audioCtx.createGain();
+		
+		var context = new AudioContext();
 
 		oscillator.connect(gainNode);
 		gainNode.connect(audioCtx.destination);
@@ -65,8 +65,12 @@ function beep(duration, frequency, volume, type, callback) {
 		if (callback) {
 			oscillator.onended = callback;
 		}
+		
+		gainNode.gain.setTargetAtTime(1, context.currentTime, 0.01);
+		gainNode.gain.setTargetAtTime(0, context.currentTime + .05, .01);
 
 		oscillator.start();
+		
 		setTimeout(function() {
 			oscillator.stop()
 		}, (duration ? duration : 500));

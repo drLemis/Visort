@@ -6,7 +6,7 @@ var canvasHeight = canvas.height;
 
 var graphLines;
 
-createGraphArray(146)
+createGraphArray(50)
 
 
 function createGraphArray(graphs) {

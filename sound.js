@@ -2,6 +2,9 @@ var playing = false;
 var playIndex = 0;
 var audioCtx;
 var oscillator;
+var gainNode;
+var context;
+var soundLength = 100;
 
 var timerId;
 
@@ -9,38 +12,50 @@ var timerId;
 
 function playSound() {
 	if (!playing) {
-		stopSound();
 		document.getElementById("button").innerHTML = 'STOP';
 		audioCtx = new(window.AudioContext || window.webkitAudioContext || window.audioContext);
 		
 		playing = true;
 		playIndex = 0;
-		timerId = setInterval('playNextElement()', 50);
+		playNextElement();
 	} else {
 		document.getElementById("button").innerHTML = 'PLAY';
+		playing = false;
+		playIndex = 0;
 		stopSound();
 	}
 }
 
 function stopSound() {
-	playing = false;
-	playIndex = 0;
-	clearInterval(timerId);
+	if (oscillator){
+		oscillator.stop();
+		audioCtx.close();
+	}
 	document.getElementById("button").innerHTML = 'PLAY';
 }
 
 function playNextElement(){
-		if (playIndex >= graphLines.length) {
-			stopSound();
-			return;
-		}
+		oscillator = audioCtx.createOscillator();
+		gainNode = audioCtx.createGain();
 		
-		var frequency = (440 / graphLines.length) * graphLines[playIndex] + 440;
+		context = new AudioContext();
+
+		oscillator.connect(gainNode);
+		gainNode.connect(audioCtx.destination);
+				
+		oscillator.frequency.value = (880 / graphLines.length) * graphLines[playIndex] + 440;
 		
-		beep(50, frequency);
+		oscillator.start(playIndex*soundLength / 1000);
+		oscillator.stop((playIndex*soundLength+soundLength) / 1000);
 		
-		console.log(frequency);
 		playIndex++;
+		
+		
+		if (playIndex >= graphLines.length) {
+			return;
+		} else {
+			playNextElement();
+		}
 }
 
 function beep(duration, frequency, volume, type, callback) {
@@ -66,13 +81,15 @@ function beep(duration, frequency, volume, type, callback) {
 			oscillator.onended = callback;
 		}
 		
-		gainNode.gain.setTargetAtTime(1, context.currentTime, 0.01);
-		gainNode.gain.setTargetAtTime(0, context.currentTime + .05, .01);
 
 		oscillator.start();
 		
 		setTimeout(function() {
-			oscillator.stop()
+			// Important! Setting a scheduled parameter value
+			console.log("fade out");
+			gainNode.gain.setValueAtTime(gainNode.gain.value, context.currentTime); 
+			gainNode.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.03);
+			//oscillator.stop()
 		}, (duration ? duration : 500));
 	}
 };

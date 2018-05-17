@@ -3,6 +3,9 @@ var playIndex = 0;
 var audioCtx;
 var oscillator;
 var gainNode;
+var volume = 0.5;
+
+var waveform = "triangle";
 
 
 var timerId;
@@ -10,8 +13,8 @@ var timerId;
 // --- sound stuff ---
 function stopSound() {
     if (oscillator) {
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime)
         oscillator.stop();
-        active = false;
     }
 }
 
@@ -19,19 +22,38 @@ function stopSound() {
 function initializeAudio() {
     audioCtx = new(window.AudioContext || window.webkitAudioContext || window.audioContext);
 
-    oscillator = audioCtx.createOscillator();
     gainNode = audioCtx.createGain();
+    gainNode.connect(audioCtx.destination);
+    gainNode.gain.setValueAtTime(0, audioCtx.currentTime)
+
+    oscillator = audioCtx.createOscillator();
     oscillator.connect(gainNode);
-    oscillator.connect(audioCtx.destination);
-    oscillator.type = 'triangle';
+    oscillator.type = waveform;
+
     oscillator.start();
 }
 
-function playElement(index, length) {
+function oscillatorWaveForm(newWaveform) {
+    if (newWaveform) {
+        waveform = newWaveform;
+    } else {
+        waveform = document.getElementById("dropdownWaveForm").value;
+    }
 
+    if (oscillator) {
+        oscillator.type = waveform;
+    }
+}
+
+function oscillatorVolume(newVolume) {
+    volume = newVolume / 100;
+    // document.getElementById('sliderVolume').innerHTML = newVolume;
+
+}
+
+function playElement(index, length) {
     if (arrayData[index]) {
+        gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
         oscillator.frequency.value = (880 / arrayData.length) * arrayData[index] + 440;
-        gainNode.gain.setValueAtTime(gainNode.gain.value, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.03);
     }
 }

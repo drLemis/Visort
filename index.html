@@ -17,14 +17,34 @@
 <body>
     <div>
         <canvas id="graphCanvas" width="800" height="600" style="border:1px solid grey;"> </canvas>
-        <button class="button" id="button" onclick="orchestrateSorting()">BUBBLE SORT</button>
+    </div>
+
+    <div>
+        <select id="dropdownSort" onclick="">
+			<option value="bubble" selected="selected">Bubble</option>
+		</select>
+        <button class="button" id="button" onclick="orchestrateSorting()">SORT</button>
+        <button class="button" id="button" onclick="initializeArray(arraySize)">SHUFFLE</button>
+    </div>
+    <br>
+    <br>
+
+    <div>
+        <select id="dropdownWaveForm" onclick="oscillatorWaveForm()">
+			<option value="sine">Sine</option>
+			<option value="triangle" selected="selected">Triangle</option>
+			<option value="square">Square</option>
+		</select>
+        <div>
+            Volume:<input type="range" min="1" max="100" value="59" class="slider" id="sliderVolume" oninput="oscillatorVolume(this.value)">
+        </div>
     </div>
 
     <br>
     <hr><br>
 
     <div class="footer">
-        2018.05.17, v1.05
+        2018.05.17, v1.06
     </div>
 
 
@@ -32,6 +52,8 @@
     <script src="draw.js"></script>
     <script src="sound.js"></script>
     <script src="sort.js"></script>
+
+    <script onload="initializeArray(arraySize);" src="data.js"></script>
 </body>
 
 </html>

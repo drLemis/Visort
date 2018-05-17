@@ -4,9 +4,6 @@ var canvasGraphic = canvas.getContext("2d");
 var canvasWidth = canvas.width;
 var canvasHeight = canvas.height;
 
-
-drawArray();
-
 function drawArray(master, slave) {
     canvasGraphic.clearRect(0, 0, canvasWidth, canvasHeight);
     for (let i = 0; i < arrayData.length; i++) {

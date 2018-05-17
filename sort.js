@@ -8,14 +8,17 @@ function orchestrateSorting() {
         initializeAudio();
         bubbleSort();
     } else {
-        document.getElementById("button").innerHTML = 'BUBBLE SORT';
-        active = false;
+        document.getElementById("button").innerHTML = 'SORT';
         stopSound();
+        stopSorting();
     }
 }
 
 function stopSorting(intervalId) {
-    clearInterval(intervalId);
+    if (intervalId) {
+        clearInterval(intervalId);
+    }
+    active = false;
     stopSound();
     drawArray();
 }
@@ -48,7 +51,8 @@ function isOrdered(a) {
 
 function bubbleSort() {
     var intervalId = setInterval(function() {
-        if (active) {
+        var isSorted = isOrdered(arrayData);
+        if (active && !isSorted) {
             for (var i = 0; i < arrayData.length - 1; i++) {
                 if (arrayData[i] > arrayData[i + 1]) {
                     var temp = arrayData[i];
@@ -59,7 +63,7 @@ function bubbleSort() {
                     break;
                 }
             }
-            if (isOrdered(arrayData)) {
+            if (isSorted) {
                 stopSorting(intervalId);
             };
         } else {

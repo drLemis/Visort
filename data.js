@@ -1,6 +1,6 @@
 var arrayData;
 
-initializeArray(50);
+var arraySize = 50;
 
 // incremental initialization
 function initializeArray(length) {
@@ -9,6 +9,7 @@ function initializeArray(length) {
         arrayData[i] = i + 1;
     }
     shuffleArray();
+    drawArray();
 }
 
 // Fisher-Yates algorithm
@@ -21,4 +22,5 @@ function shuffleArray() {
         arrayData[counter] = arrayData[index];
         arrayData[index] = temp;
     }
+
 }

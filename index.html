@@ -15,16 +15,30 @@
 </head>
 
 <body>
-    <div>
-        <canvas id="graphCanvas" width="800" height="600" style="border:1px solid grey;"> </canvas>
+    <div width="100%" style="text-align:center;">
+        <canvas id="graphCanvas" width="800px" height="500px" style="border:1px solid grey;"> </canvas>
     </div>
 
     <div>
         <select id="dropdownSort" onclick="">
 			<option value="bubble" selected="selected">Bubble</option>
+			<!-- <option value="incertion">Incertion</option> -->
+			<option value="selection">Selection</option>
 		</select>
         <button class="button" id="button" onclick="orchestrateSorting()">SORT</button>
-        <button class="button" id="button" onclick="initializeArray(arraySize)">SHUFFLE</button>
+        <br> Rate (ms):
+        <input id="sortRate" type="number" value="25">
+        <script>
+            sortRate.oninput = function() {
+                setRate(sortRate.value);
+            };
+        </script>
+
+        <br> Array size:
+        <input id="arrayLength" type="number" value="42">
+
+        <br>
+        <button class="button" id="button" onclick="initializeArray(arraySize)">RESTART</button>
     </div>
     <br>
     <br>
@@ -44,7 +58,7 @@
     <hr><br>
 
     <div class="footer">
-        2018.05.17, v1.06
+        2018.05.17, v1.07
     </div>
 
 

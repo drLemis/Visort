@@ -1,16 +1,9 @@
-var playIndex = 0;
-
 var audioCtx;
 var oscillator;
 var gainNode;
 var volume = 0.5;
-
 var waveform = "triangle";
 
-
-var timerId;
-
-// --- sound stuff ---
 function stopSound() {
     if (oscillator) {
         gainNode.gain.setValueAtTime(0, audioCtx.currentTime)

@@ -1,11 +1,13 @@
 var arrayData;
 
-var arraySize = 50;
+var arraySize = 20;
 
 // incremental initialization
-function initializeArray(length) {
-    arrayData = new Array(length);
-    for (let i = 0; i < length; i++) {
+function initializeArray() {
+    arraySize = document.getElementById("arrayLength").value;
+
+    arrayData = new Array(arraySize);
+    for (let i = 0; i < arraySize; i++) {
         arrayData[i] = i + 1;
     }
     shuffleArray();

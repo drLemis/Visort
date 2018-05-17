@@ -27,7 +27,7 @@ function drawArray(master, slave) {
         canvasGraphic.fillStyle = color;
         canvasGraphic.fillRect(offset, canvasHeight - lineHeight, lineWidth, lineHeight);
 
-        canvasGraphic.strokeStyle = "#000000FF";
+        canvasGraphic.strokeStyle = color;
         canvasGraphic.strokeRect(offset, canvasHeight - lineHeight, lineWidth, lineHeight);
 
     }
